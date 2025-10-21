@@ -1,0 +1,17 @@
+{
+  "name": "gistvox-share",
+  "version": "1.0.0",
+  "description": "Social sharing pages for Gistvox with meta tags",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "@vercel/og": "^0.5.20",
+    "tslib": "^2.6.2"
+  },
+  "devDependencies": {
+    "vercel": "^32.0.0"
+  }
+}

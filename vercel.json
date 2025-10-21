@@ -1,0 +1,32 @@
+{
+  "functions": {
+    "api/p/[id].js": {
+      "maxDuration": 10
+    },
+    "api/og/[id].js": {
+      "maxDuration": 10
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/favicon.ico",
+      "destination": "/api/favicon"
+    },
+    {
+      "source": "/p/:id",
+      "destination": "/api/p/:id"
+    },
+    {
+      "source": "/og/:id.png",
+      "destination": "/api/og/:id"
+    },
+    {
+      "source": "/embed/:id",
+      "destination": "/api/embed/:id"
+    }
+  ]
+}
