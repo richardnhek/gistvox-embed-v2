@@ -87,7 +87,7 @@ export default async function handler(req, res) {
       <meta name="twitter:title" content="${post.title}" />
       <meta name="twitter:description" content="By @${userHandle} • ${duration}" />
       <meta name="twitter:image" content="https://${req.headers.host}/og/${id}.png" />
-      <meta name="twitter:player" content="https://${req.headers.host}/embed/${id}" />
+      <meta name="twitter:player" content="https://${req.headers.host}/embed/${id}?v=2" />
       <meta name="twitter:player:width" content="480" />
       <meta name="twitter:player:height" content="400" />
       
