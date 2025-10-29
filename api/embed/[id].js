@@ -630,7 +630,7 @@ function formatWithCommas(num) {
 function formatTime(seconds) {
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
-  return \`\${m}:\${s.toString().padStart(2, '0')}\`;
+  return m + ':' + s.toString().padStart(2, '0');
 }
 
 // Setup audio player
@@ -705,8 +705,8 @@ audio.addEventListener('loadedmetadata', () => {
 audio.addEventListener('timeupdate', () => {
   if (!isDragging && audio.duration) {
     const percent = (audio.currentTime / audio.duration) * 100;
-    progressFill.style.width = \`\${percent}%\`;
-    progressThumb.style.left = \`\${percent}%\`;
+    progressFill.style.width = percent + '%';
+    progressThumb.style.left = percent + '%';
     currentTimeEl.textContent = formatTime(audio.currentTime);
   }
 });
@@ -751,8 +751,8 @@ const endDrag = () => {
 };
 
 const updateProgress = (percent) => {
-  progressFill.style.width = \`\${percent}%\`;
-  progressThumb.style.left = \`\${percent}%\`;
+  progressFill.style.width = percent + '%';
+  progressThumb.style.left = percent + '%';
   const time = audio.duration ? (percent / 100) * audio.duration : 0;
   currentTimeEl.textContent = formatTime(time);
 };
@@ -789,7 +789,7 @@ async function trackListen() {
         if (statsText) {
           const currentText = statsText.textContent;
           const newText = currentText.replace(/(\\d+(?:,\\d+)*) listens/, 
-            \`\${formatWithCommas(result.count)} listens\`);
+            formatWithCommas(result.count) + ' listens');
           statsText.textContent = newText;
         }
       }
