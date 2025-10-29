@@ -624,7 +624,7 @@ body {
 <script>
 // Helper functions
 function formatWithCommas(num) {
-  return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
+  return parseInt(num).toLocaleString();
 }
 
 function formatTime(seconds) {
@@ -844,10 +844,6 @@ audio.addEventListener('play', () => {
 </body>
 </html>`;
 
-    // Helper function for formatting numbers with commas
-    function formatWithCommas(num) {
-      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
     
     res.setHeader('Content-Type', 'text/html');
     res.setHeader('Cache-Control', 'max-age=3600');
