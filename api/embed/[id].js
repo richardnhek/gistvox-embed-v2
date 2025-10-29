@@ -237,8 +237,8 @@ body {
 /* User Section */
 .user-section {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  align-items: center;
+  justify-content: center;
   margin-bottom: 16px;
 }
 
@@ -274,6 +274,7 @@ body {
 .content-info {
   flex: 1;
   min-width: 0;
+  text-align: center;
 }
 
 .user-handle {
@@ -541,18 +542,13 @@ body {
       </div>
     </div>
     <a href="https://gistvox.app.link/post/${id}" target="_blank" class="gistvox-link">
-      <img src="https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox_logo.png" 
+      <img src="https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox-logo.png" 
            alt="Gistvox" 
            style="height: 24px; width: auto;" />
     </a>
   </div>
 
   <div class="user-section">
-    <div class="avatar ${user?.avatar_url ? 'with-image' : ''}">
-      ${user?.avatar_url ? 
-        `<img src="${user.avatar_url}" alt="${displayName}">` : 
-        `<img src="https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox_logo.png" alt="Gistvox" style="width: 70%; height: 70%; object-fit: contain;">`}
-    </div>
     <div class="content-info">
       <h3 class="title">${post.title || 'Untitled Story'}</h3>
       <div class="user-handle">@${userHandle}</div>

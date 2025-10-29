@@ -119,14 +119,17 @@ export default async function handler(req, res) {
           width: 80px;
           height: 80px;
           margin: 0 auto 30px;
-          background: linear-gradient(135deg, #667eea, #764ba2);
-          border-radius: 20px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
-          font-size: 36px;
-          font-weight: bold;
+          background: linear-gradient(135deg, #D0E0ED, #B8D0E3);
+          border-radius: 20px;
+          padding: 12px;
+        }
+        .logo img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
         h1 {
           text-align: center;
@@ -250,7 +253,9 @@ export default async function handler(req, res) {
     </head>
     <body>
       <div class="container">
-        <div class="logo">G</div>
+        <div class="logo">
+          <img src="https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox-logo.png" alt="Gistvox">
+        </div>
         
         <h1>${post.title}</h1>
         
@@ -268,7 +273,7 @@ export default async function handler(req, res) {
           <iframe 
             src="https://${req.headers.host}/embed/${id}" 
             width="100%" 
-            height="380" 
+            height="320" 
             frameborder="0"
             allow="autoplay">
           </iframe>
