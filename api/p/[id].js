@@ -402,7 +402,7 @@ export default async function handler(req, res) {
           }
           
           function formatWithCommas(num) {
-            return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+            return parseInt(num).toLocaleString();
           }
           
           // Track listen to Supabase
