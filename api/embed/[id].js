@@ -106,6 +106,8 @@ export default async function handler(req, res) {
 
 :root {
   --primary: #9EBACF;
+  --primary-light: #B8D0E3;
+  --primary-lighter: #D0E0ED;
   --primary-dark: #7A9AB2;
   --success: #10B981;
   --muted: #6b7280;
@@ -123,7 +125,7 @@ body {
   justify-content: center;
   min-height: 350px;
   padding: 16px;
-  background: transparent;
+  background: linear-gradient(135deg, #f0f4f8 0%, #e8f0f7 100%);
   color: var(--text);
 }
 
@@ -244,7 +246,7 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 24px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, var(--primary-lighter) 0%, var(--primary-light) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -439,7 +441,7 @@ body {
 }
 
 .play-btn.playing {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
   box-shadow: 0 4px 16px rgba(158, 186, 207, 0.35);
 }
 
@@ -539,9 +541,9 @@ body {
       </div>
     </div>
     <a href="https://gistvox.app.link/post/${id}" target="_blank" class="gistvox-link">
-      <div class="logo-icon">
-        <img src="https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox-logo.png" alt="Gistvox" />
-      </div>
+      <img src="https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox_logo.png" 
+           alt="Gistvox" 
+           style="height: 24px; width: auto;" />
     </a>
   </div>
 
@@ -549,13 +551,12 @@ body {
     <div class="avatar ${user?.avatar_url ? 'with-image' : ''}">
       ${user?.avatar_url ? 
         `<img src="${user.avatar_url}" alt="${displayName}">` : 
-        displayName[0].toUpperCase()}
+        `<img src="https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox_logo.png" alt="Gistvox" style="width: 70%; height: 70%; object-fit: contain;">`}
     </div>
     <div class="content-info">
       <h3 class="title">${post.title || 'Untitled Story'}</h3>
-      <div class="date">${formatDate(post.created_at)}</div>
       <div class="user-handle">@${userHandle}</div>
-      ${post.description ? `<p class="description">${post.description.substring(0, 200)}${post.description.length > 200 ? '...' : ''}</p>` : ''}
+      <div class="date">${formatDate(post.created_at)} • ${duration}</div>
     </div>
   </div>
 
