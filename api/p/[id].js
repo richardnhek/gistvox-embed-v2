@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     // Fetch post data
     const { data: post, error } = await supabase
       .from('posts')
-      .select('id, title, description, audio_url, audio_duration, created_at, user_id, audience_type')
+      .select('id, title, description, audio_url, audio_duration, created_at, user_id, audience_type, listens_count, likes_count, saves_count, shares_count')
       .eq('id', id)
       .eq('audience_type', 'public')
       .single();
@@ -122,7 +122,6 @@ export default async function handler(req, res) {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: linear-gradient(135deg, #D0E0ED, #B8D0E3);
           border-radius: 20px;
           padding: 12px;
         }
@@ -287,12 +286,14 @@ export default async function handler(req, res) {
           font-size: 11px;
           color: #6b7280;
           font-family: monospace;
+          margin-bottom: 24px;
         }
         .buttons {
           display: flex;
           gap: 12px;
           justify-content: center;
           flex-wrap: wrap;
+          margin-top: 24px;
         }
         .btn {
           padding: 14px 32px;
@@ -413,11 +414,11 @@ export default async function handler(req, res) {
             }
             
             try {
-              const response = await fetch('${process.env.NEXT_PUBLIC_SUPABASE_URL}/rest/v1/rpc/track_embed_listen', {
+              const response = await fetch('https://vrcshstpoimwpwyyamvq.supabase.co/rest/v1/rpc/track_embed_listen', {
                 method: 'POST',
                 headers: {
-                  'apikey': '${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}',
-                  'Authorization': 'Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}',
+                  'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZyY3Noc3Rwb2ltd3B3eXlhbXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTg4NzEsImV4cCI6MjA3MTE5NDg3MX0.yAJbFPzYTGLwSZFOAVRukwXyNQQ69cdVYwYWvRAkUNc',
+                  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZyY3Noc3Rwb2ltd3B3eXlhbXZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU2MTg4NzEsImV4cCI6MjA3MTE5NDg3MX0.yAJbFPzYTGLwSZFOAVRukwXyNQQ69cdVYwYWvRAkUNc',
                   'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ p_post_id: '${id}' })
