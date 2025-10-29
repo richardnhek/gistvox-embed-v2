@@ -801,7 +801,7 @@ async function trackListen() {
 
 // Share handler
 window.handleShare = async (e) => {
-  const shareUrl = 'https://gistvox-share.vercel.app/p/' + '${id}';
+  const shareUrl = 'https://gistvox-share.vercel.app/p/${id}';
   
   try {
     await navigator.clipboard.writeText(shareUrl);
@@ -831,7 +831,7 @@ window.handleShare = async (e) => {
 
 // Open in app handler
 window.openInApp = () => {
-  window.open('https://gistvox.app.link/post/' + '${id}', '_blank');
+  window.open('https://gistvox.app.link/post/${id}', '_blank');
 };
 
 // Notify parent window
