@@ -622,6 +622,9 @@ body {
 </div>
 
 <script>
+// Post ID for use in JavaScript
+const postId = '${id}';
+
 // Helper functions
 function formatWithCommas(num) {
   return parseInt(num).toLocaleString();
@@ -788,9 +791,12 @@ async function trackListen() {
         const statsText = document.querySelector('.stats-text');
         if (statsText) {
           const currentText = statsText.textContent;
-          const newText = currentText.replace(/(\\d+(?:,\\d+)*) listens/, 
-            formatWithCommas(result.count) + ' listens');
-          statsText.textContent = newText;
+          const parts = currentText.split(' listens');
+          if (parts.length > 0) {
+            const beforeListens = parts[0].split(' ');
+            beforeListens[beforeListens.length - 1] = formatWithCommas(result.count);
+            statsText.textContent = beforeListens.join(' ') + ' listens' + parts.slice(1).join(' listens');
+          }
         }
       }
     }
@@ -801,7 +807,7 @@ async function trackListen() {
 
 // Share handler
 window.handleShare = async (e) => {
-  const shareUrl = 'https://gistvox-share.vercel.app/p/${id}';
+  const shareUrl = 'https://gistvox-share.vercel.app/p/' + postId;
   
   try {
     await navigator.clipboard.writeText(shareUrl);
@@ -831,13 +837,13 @@ window.handleShare = async (e) => {
 
 // Open in app handler
 window.openInApp = () => {
-  window.open('https://gistvox.app.link/post/${id}', '_blank');
+  window.open('https://gistvox.app.link/post/' + postId, '_blank');
 };
 
 // Notify parent window
 audio.addEventListener('play', () => {
   if (window.parent !== window) {
-    window.parent.postMessage({ type: 'gistvox-embed-play', postId: '${id}' }, '*');
+    window.parent.postMessage({ type: 'gistvox-embed-play', postId: postId }, '*');
   }
 });
 </script>
