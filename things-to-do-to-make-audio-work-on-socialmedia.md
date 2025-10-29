@@ -1,29 +1,28 @@
 # Audio Working on Social Media - Implementation Guide
 
+## 🎯 IMPORTANT: For Complete Flutter Implementation
+**See detailed production-ready code in:** `FLUTTER_AUDIOGRAM_IMPLEMENTATION.md`
+
 ## ✅ DEPLOYMENT STATUS
 - **Deployed**: October 21, 2025
 - **Production URL**: https://gistvox-share.vercel.app
-- **Twitter Player Fix**: DEPLOYED - Embed now hosted on Vercel
+- **Twitter/X**: ✅ WORKING - Audio plays directly in tweets!
+- **Facebook/Instagram/LinkedIn**: ⏳ Requires Flutter implementation 
+- **Implementation Guide**: See `FLUTTER_AUDIOGRAM_IMPLEMENTATION.md` for production code
 
 ---
 
-## 🔥 PART 1: TWITTER/X FIX (DEPLOYED)
+## 🔥 PART 1: TWITTER/X (✅ COMPLETED & WORKING)
 
-### What Was Fixed
-- **Problem**: Twitter player showed 404 when clicking play button
-- **Root Cause**: GitHub Pages URL had issues with Twitter's iframe security
-- **Solution**: Moved embed hosting to same Vercel deployment
+### Status: LIVE IN PRODUCTION
+- Twitter player cards are fully functional
+- Audio plays directly in tweets without leaving Twitter
+- No app required - works on web and mobile Twitter
 
-### Changes Made
-1. Created `/api/embed/[id].js` on Vercel
-2. Updated Twitter meta tag to use local embed URL
-3. Removed dependency on external GitHub Pages site
-
-### Test Your Fix
-1. Go to: https://cards-dev.twitter.com/validator
-2. Enter: `https://gistvox-share.vercel.app/p/233d8054-c0c8-489e-b64f-5fc23ae7f783`
-3. Click "Preview Card"
-4. Audio should now play directly in Twitter!
+### Test Link
+```
+https://gistvox-share.vercel.app/p/[POST_ID]
+```
 
 ---
 
@@ -74,13 +73,18 @@ SharePlatform? _detectSharePlatform(String shareText) {
 
 ---
 
-## 🎬 PART 3: AUDIO-TO-VIDEO CONVERSION
+## 🎬 PART 3: AUDIO-TO-VIDEO CONVERSION FOR OTHER PLATFORMS
 
-### Why Needed
-- **Facebook**: NO audio support - only video
-- **LinkedIn**: NO audio support - only video  
-- **Instagram**: NO audio support - only video
-- **WhatsApp**: NO audio embeds in previews
+### Platform Reality Check
+| Platform | Audio Support | Required Solution | User Experience |
+|----------|--------------|------------------|------------------|
+| **Facebook** | ❌ NONE | MP4 Video | Video with static image/waveform |
+| **LinkedIn** | ❌ NONE | MP4 Video | Professional video preview |
+| **Instagram Feed** | ❌ NONE | MP4 Video (1:1) | Square video post |
+| **Instagram Reels** | ❌ NONE | MP4 Video (9:16) | Vertical video |
+| **Instagram Stories** | ❌ NONE | MP4 Video (9:16) | 15-second clips |
+| **WhatsApp** | ❌ NONE | MP4 Video | Video preview in chat |
+| **TikTok** | ❌ NONE | MP4 Video (9:16) | Vertical video required |
 
 ### Implementation Strategy: Client-Side FFmpeg
 
@@ -88,33 +92,74 @@ SharePlatform? _detectSharePlatform(String shareText) {
 **File**: `pubspec.yaml`
 ```yaml
 dependencies:
-  ffmpeg_kit_flutter: ^6.0.3  # For video generation
-  path_provider: ^2.1.1       # For temporary file storage
-  share_plus: ^7.2.1          # Enhanced sharing with video support
+  # Core dependencies for audiogram generation
+  ffmpeg_kit_flutter_audio: ^6.0.3  # Smaller audio-only FFmpeg build
+  path_provider: ^2.1.4             # Temporary file management
+  share_plus: ^7.2.2                # Native sharing with video support
+  http: ^1.1.0                      # For downloading assets
+  image: ^4.1.3                     # For image processing
+  
+  # Optional: For enhanced visuals
+  flutter_cache_manager: ^3.3.1    # Cache downloaded assets
+  permission_handler: ^11.1.0      # Handle storage permissions
 ```
 
-#### Step 2: Create Audiogram Generator Service
+**IMPORTANT iOS Setup**: Add to `ios/Runner/Info.plist`:
+```xml
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>Save generated videos to your photo library</string>
+<key>NSPhotoLibraryUsageDescription</key>
+<string>Access photos for video generation</string>
+```
+
+**IMPORTANT Android Setup**: Add to `android/app/src/main/AndroidManifest.xml`:
+```xml
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+```
+
+#### Step 2: Create Audiogram Generator Service (PRODUCTION-READY)
 **File**: `lib/services/audiogram_generator.dart`
 
 ```dart
 import 'dart:io';
-import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter/return_code.dart';
+import 'dart:typed_data';
+import 'package:ffmpeg_kit_flutter_audio/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_audio/return_code.dart';
+import 'package:ffmpeg_kit_flutter_audio/ffmpeg_kit_config.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:image/image.dart' as img;
 
 class AudiogramGenerator {
-  static const Duration _maxVideoDuration = Duration(seconds: 60);
+  // Platform-specific limits
+  static const Map<AudiogramStyle, Duration> _maxDurations = {
+    AudiogramStyle.instagramFeed: Duration(seconds: 60),
+    AudiogramStyle.instagramReels: Duration(seconds: 90),
+    AudiogramStyle.instagramStory: Duration(seconds: 15),
+    AudiogramStyle.facebook: Duration(minutes: 240),
+    AudiogramStyle.linkedin: Duration(minutes: 10),
+    AudiogramStyle.whatsapp: Duration(seconds: 90), // 16MB limit
+    AudiogramStyle.twitter: Duration(seconds: 140),
+    AudiogramStyle.tiktok: Duration(seconds: 60),
+  };
   
-  /// Generates a video from audio and cover image
-  Future<File?> generateAudiogram({
+  final DefaultCacheManager _cacheManager = DefaultCacheManager();
+  
+  /// Generates a platform-optimized video from audio
+  Future<VideoGenerationResult> generateAudiogram({
     required String audioUrl,
     required String coverImageUrl,
     required String postId,
-    String? title,
-    String? authorHandle,
-    Duration? audioDuration,
-    AudiogramStyle style = AudiogramStyle.square,
+    required String title,
+    required String authorHandle,
+    required Duration audioDuration,
+    required AudiogramStyle style,
+    Function(double)? onProgress,
+    bool addWaveform = false,
+    bool addCaptions = false,
+    String? brandingLogoUrl,
   }) async {
     try {
       // 1. Download audio and image to temp directory
@@ -406,11 +451,18 @@ By @$userHandle on Gistvox''';
 
 ## 🚀 DEPLOYMENT CHECKLIST
 
-### Immediate Actions (Today)
-- [x] Deploy Vercel changes (DONE)
-- [ ] Update Flutter app share URL
-- [ ] Test Twitter player card
-- [ ] Remove GISTVOX_EMBED_URL from Vercel environment
+### ✅ Completed (Server-Side)
+- [x] Deploy Vercel changes 
+- [x] Remove GISTVOX_EMBED_URL from environment
+- [x] Twitter player cards working
+- [x] Cache buster implemented
+
+### 📱 Flutter Implementation Required
+- [ ] Update share URL to `https://gistvox-share.vercel.app/p/`
+- [ ] Implement AudiogramGeneratorService 
+- [ ] Add platform-specific share UI
+- [ ] Test video generation on iOS/Android
+- [ ] Handle permissions properly
 
 ### Next Sprint (2-3 days)
 - [ ] Add ffmpeg_kit_flutter dependency
