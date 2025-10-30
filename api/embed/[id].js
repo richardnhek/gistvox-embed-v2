@@ -527,10 +527,11 @@ export default async function handler(req, res) {
     html += '    </button>\n';
     html += '    <button class="control-btn play-btn" id="playBtn" aria-label="Play/Pause">\n';
     html += '      <svg fill="currentColor" viewBox="0 0 24 24" id="playIcon">\n';
-    html += '        <path d="M8 5v14l11-7z"/>\n';
+    html += '        <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z"/>\n';
     html += '      </svg>\n';
     html += '      <svg fill="currentColor" viewBox="0 0 24 24" id="pauseIcon" style="display:none">\n';
-    html += '        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>\n';
+    html += '        <rect x="6" y="5" width="4" height="14" rx="1"/>\n';
+    html += '        <rect x="14" y="5" width="4" height="14" rx="1"/>\n';
     html += '      </svg>\n';
     html += '    </button>\n';
     html += '    <button class="control-btn skip" id="skipForward" aria-label="Skip forward 15 seconds">\n';
