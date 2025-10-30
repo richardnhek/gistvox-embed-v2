@@ -389,9 +389,13 @@ export default async function handler(req, res) {
     html += '}\n';
     
     html += '.play-btn svg {\n';
-    html += '  width: 32px;\n';
-    html += '  height: 32px;\n';
+    html += '  width: 36px;\n';
+    html += '  height: 36px;\n';
     html += '  color: var(--primary);\n';
+    html += '}\n';
+    
+    html += '#playIcon {\n';
+    html += '  margin-left: 3px;\n';
     html += '}\n';
     
     html += '.play-btn.playing svg {\n';
@@ -522,11 +526,11 @@ export default async function handler(req, res) {
     html += '      </svg>\n';
     html += '    </button>\n';
     html += '    <button class="control-btn play-btn" id="playBtn" aria-label="Play/Pause">\n';
-    html += '      <svg fill="currentColor" viewBox="0 0 20 20" id="playIcon">\n';
-    html += '        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l3-2z"/>\n';
+    html += '      <svg fill="currentColor" viewBox="0 0 24 24" id="playIcon">\n';
+    html += '        <path d="M8 5v14l11-7z"/>\n';
     html += '      </svg>\n';
-    html += '      <svg fill="currentColor" viewBox="0 0 20 20" id="pauseIcon" style="display:none">\n';
-    html += '        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z"/>\n';
+    html += '      <svg fill="currentColor" viewBox="0 0 24 24" id="pauseIcon" style="display:none">\n';
+    html += '        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>\n';
     html += '      </svg>\n';
     html += '    </button>\n';
     html += '    <button class="control-btn skip" id="skipForward" aria-label="Skip forward 15 seconds">\n';
@@ -539,8 +543,8 @@ export default async function handler(req, res) {
     // Action buttons
     html += '  <div class="action-buttons">\n';
     html += '    <button class="action-btn" id="shareBtn">\n';
-    html += '      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">\n';
-    html += '        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m9.032 4.026a9.001 9.001 0 01-7.432 0"/>\n';
+    html += '      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">\n';
+    html += '        <path stroke-linecap="round" stroke-linejoin="round" d="M8.59 13.51l6.83 3.98m-.01-10.98l-6.82 3.98M21 5a3 3 0 11-6 0 3 3 0 016 0zM9 12a3 3 0 11-6 0 3 3 0 016 0zm12 7a3 3 0 11-6 0 3 3 0 016 0z"/>\n';
     html += '      </svg>\n';
     html += '      <span>Share</span>\n';
     html += '    </button>\n';
