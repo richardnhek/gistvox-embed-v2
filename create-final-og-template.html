@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Final Gistvox OG Template</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            color: #9EBACF;
+        }
+        
+        .controls {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .controls h2 {
+            margin-top: 0;
+            color: #B8D0E3;
+            margin-bottom: 15px;
+        }
+        
+        button {
+            background: #9EBACF;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background: #7A9AB2;
+        }
+        
+        #canvas-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        #og-canvas {
+            border: 1px solid #ddd;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .info {
+            background: rgba(158, 186, 207, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #9EBACF;
+            color: #B8D0E3;
+        }
+        
+        .info code {
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Create Universal Gistvox OG Template</h1>
+        
+        <div class="info">
+            <h3>Final Solution:</h3>
+            <p>This creates a beautiful, universal OG image that works for ALL posts.</p>
+            <p>Since dynamic text rendering is problematic, this template shows your brand beautifully.</p>
+            <ol>
+                <li>Click "Download Template" below</li>
+                <li>Upload to Supabase as: <code>og-universal-template.png</code></li>
+                <li>All posts will use this professional template</li>
+            </ol>
+        </div>
+        
+        <div class="controls">
+            <h2>Universal Template Generator</h2>
+            <p>This template will be used for all posts. It shows your brand professionally without broken text.</p>
+            <button onclick="downloadImage()">Download Universal Template (1200x630 PNG)</button>
+        </div>
+        
+        <div id="canvas-container">
+            <canvas id="og-canvas" width="1200" height="630"></canvas>
+        </div>
+    </div>
+    
+    <script>
+        const canvas = document.getElementById('og-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Gistvox brand colors
+        const GISTVOX_PRIMARY = '#9EBACF';
+        const GISTVOX_DARK = '#7A9AB2';
+        const GISTVOX_LIGHT = '#B8D0E3';
+        const GISTVOX_LIGHTER = '#D0E0ED';
+        
+        // Load Gistvox logo
+        const logoImg = new Image();
+        logoImg.crossOrigin = "anonymous";
+        logoImg.src = 'https://vrcshstpoimwpwyyamvq.supabase.co/storage/v1/object/public/gistvox-public/gistvox-logo.png';
+        
+        logoImg.onload = function() {
+            drawCanvas();
+        };
+        
+        logoImg.onerror = function() {
+            console.log('Logo failed to load, drawing anyway');
+            drawCanvas();
+        };
+        
+        function drawCanvas() {
+            // Clear canvas
+            ctx.clearRect(0, 0, 1200, 630);
+            
+            // Create gradient background
+            const bgGradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            bgGradient.addColorStop(0, '#F8FAFB');
+            bgGradient.addColorStop(1, '#E5E7EB');
+            ctx.fillStyle = bgGradient;
+            ctx.fillRect(0, 0, 1200, 630);
+            
+            // Left panel - White with subtle gradient
+            const panelGradient = ctx.createLinearGradient(0, 0, 400, 630);
+            panelGradient.addColorStop(0, '#FFFFFF');
+            panelGradient.addColorStop(1, '#F9FAFB');
+            ctx.fillStyle = panelGradient;
+            ctx.fillRect(0, 0, 400, 630);
+            
+            // Panel separator
+            ctx.strokeStyle = '#E5E7EB';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(400, 0);
+            ctx.lineTo(400, 630);
+            ctx.stroke();
+            
+            // Logo container with Gistvox blue accent
+            const logoContainer = ctx.createLinearGradient(75, 165, 325, 465);
+            logoContainer.addColorStop(0, GISTVOX_LIGHTER);
+            logoContainer.addColorStop(1, GISTVOX_LIGHT);
+            ctx.fillStyle = logoContainer;
+            ctx.globalAlpha = 0.3;
+            roundedRect(ctx, 75, 165, 250, 250, 25);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            
+            // Draw logo if loaded
+            if (logoImg.complete && logoImg.naturalHeight !== 0) {
+                // White background for logo
+                ctx.fillStyle = 'white';
+                roundedRect(ctx, 90, 180, 220, 220, 15);
+                ctx.fill();
+                
+                // Draw the actual logo
+                ctx.drawImage(logoImg, 100, 190, 200, 200);
+            } else {
+                // Fallback design
+                ctx.fillStyle = 'white';
+                roundedRect(ctx, 90, 180, 220, 220, 15);
+                ctx.fill();
+                
+                // Draw Gistvox "G"
+                ctx.fillStyle = GISTVOX_PRIMARY;
+                ctx.font = 'bold 120px -apple-system, BlinkMacSystemFont, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('G', 200, 320);
+            }
+            
+            // Reset text align
+            ctx.textAlign = 'left';
+            
+            // Right side branding content
+            
+            // "GISTVOX" main brand
+            ctx.fillStyle = GISTVOX_DARK;
+            ctx.font = '800 72px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('GISTVOX', 460, 200);
+            
+            // Tagline
+            ctx.fillStyle = '#4B5563';
+            ctx.font = '300 36px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('Audio Stories That Matter', 460, 260);
+            
+            // Description text
+            ctx.fillStyle = '#6B7280';
+            ctx.font = '400 24px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('Share your voice with the world.', 460, 320);
+            ctx.fillText('Listen to amazing audio content.', 460, 355);
+            
+            // Play button with gradient
+            const playGradient = ctx.createRadialGradient(488, 440, 0, 488, 440, 35);
+            playGradient.addColorStop(0, GISTVOX_LIGHT);
+            playGradient.addColorStop(1, GISTVOX_PRIMARY);
+            ctx.fillStyle = playGradient;
+            ctx.beginPath();
+            ctx.arc(488, 440, 35, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Play triangle
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.moveTo(478, 425);
+            ctx.lineTo(478, 455);
+            ctx.lineTo(505, 440);
+            ctx.closePath();
+            ctx.fill();
+            
+            // "Listen Now" text
+            ctx.fillStyle = '#374151';
+            ctx.font = '600 22px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('Listen Now', 540, 447);
+            
+            // Beautiful audio waveform
+            const waveData = [
+                { x: 460, height: 25, delay: 0 },
+                { x: 475, height: 35, delay: 1 },
+                { x: 490, height: 45, delay: 2 },
+                { x: 505, height: 38, delay: 3 },
+                { x: 520, height: 50, delay: 4 },
+                { x: 535, height: 42, delay: 5 },
+                { x: 550, height: 30, delay: 6 },
+                { x: 565, height: 48, delay: 7 },
+                { x: 580, height: 40, delay: 8 },
+                { x: 595, height: 28, delay: 9 },
+                { x: 610, height: 38, delay: 10 },
+                { x: 625, height: 45, delay: 11 },
+                { x: 640, height: 32, delay: 12 },
+                { x: 655, height: 42, delay: 13 },
+                { x: 670, height: 50, delay: 14 },
+                { x: 685, height: 35, delay: 15 },
+                { x: 700, height: 25, delay: 16 },
+                { x: 715, height: 40, delay: 17 },
+                { x: 730, height: 30, delay: 18 },
+                { x: 745, height: 45, delay: 19 }
+            ];
+            
+            waveData.forEach((wave, i) => {
+                // Create gradient for each bar
+                const barGradient = ctx.createLinearGradient(wave.x, 575 - wave.height, wave.x, 575);
+                barGradient.addColorStop(0, GISTVOX_LIGHT);
+                barGradient.addColorStop(1, GISTVOX_PRIMARY);
+                
+                ctx.fillStyle = barGradient;
+                ctx.globalAlpha = 0.7;
+                
+                // Draw rounded bar
+                roundedRect(ctx, wave.x, 575 - wave.height, 6, wave.height, 3);
+                ctx.fill();
+            });
+            
+            ctx.globalAlpha = 1;
+            
+            // Website URL
+            ctx.fillStyle = GISTVOX_PRIMARY;
+            ctx.font = '600 16px -apple-system, BlinkMacSystemFont, sans-serif';
+            ctx.fillText('gistvox.com', 460, 540);
+            
+            // Add decorative elements
+            ctx.strokeStyle = GISTVOX_LIGHT;
+            ctx.lineWidth = 2;
+            ctx.globalAlpha = 0.3;
+            
+            // Top decorative line
+            ctx.beginPath();
+            ctx.moveTo(460, 100);
+            ctx.lineTo(1140, 100);
+            ctx.stroke();
+            
+            // Bottom decorative line
+            ctx.beginPath();
+            ctx.moveTo(460, 600);
+            ctx.lineTo(1140, 600);
+            ctx.stroke();
+            
+            ctx.globalAlpha = 1;
+        }
+        
+        function roundedRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'og-universal-template.png';
+            link.href = canvas.toDataURL('image/png', 1.0);
+            link.click();
+            
+            alert('Template downloaded! Now upload it to Supabase Storage as "og-universal-template.png" in the gistvox-public bucket.');
+        }
+        
+        // Draw on load
+        setTimeout(() => {
+            drawCanvas();
+        }, 100);
+    </script>
+</body>
+</html>

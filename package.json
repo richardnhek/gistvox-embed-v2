@@ -4,11 +4,20 @@
   "description": "Social sharing pages for Gistvox with meta tags",
   "scripts": {
     "dev": "vercel dev",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "generate-og": "node generate-og-images.js generate",
+    "generate-og-post": "node generate-og-images.js generate"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.38.0",
     "@vercel/og": "^0.5.20",
+    "canvas": "^3.2.0",
+    "dotenv": "^17.2.3",
+    "jimp": "^1.6.0",
+    "satori": "^0.10.13",
+    "@resvg/resvg-js": "^2.6.2",
+    "react": "^19.2.0",
+    "sharp": "^0.34.4",
     "tslib": "^2.6.2"
   },
   "devDependencies": {

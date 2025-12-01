@@ -70,23 +70,26 @@ export default async function handler(req, res) {
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>${post.title} by @${userHandle} - Gistvox</title>
       
-      <!-- Open Graph for Facebook, LinkedIn, WhatsApp -->
+      <!-- Open Graph - Spotify exact structure -->
+      <meta property="fb:app_id" content="1571474837592831" />
+      <meta property="og:url" content="https://${req.headers.host}/p/${id}" />
       <meta property="og:type" content="music.song" />
       <meta property="og:title" content="${post.title}" />
-      <meta property="og:description" content="By @${userHandle} • ${duration} • Listen on Gistvox" />
-      <meta property="og:url" content="https://${req.headers.host}/p/${id}" />
+      <meta property="og:description" content="${displayName} · ${post.title} · Audio · ${new Date().getFullYear()}" />
       <meta property="og:image" content="https://${req.headers.host}/og/${id}.png" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:site_name" content="Gistvox" />
-      <meta property="og:audio" content="${post.audio_url}" />
+      <meta property="og:image:alt" content="" />
       
-      <!-- Twitter/X Player Card - Enables playable audio in tweets! -->
-      <meta name="twitter:card" content="player" />
+      <!-- Twitter/X Card with proper large image support -->
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@gistvox" />
       <meta name="twitter:title" content="${post.title}" />
-      <meta name="twitter:description" content="By @${userHandle} • ${duration}" />
+      <meta name="twitter:description" content="${post.description ? post.description.substring(0, 160) : `By @${userHandle} • ${duration}`}" />
       <meta name="twitter:image" content="https://${req.headers.host}/og/${id}.png" />
+      <meta name="twitter:image:width" content="1200" />
+      <meta name="twitter:image:height" content="630" />
+      <meta name="twitter:image:alt" content="${post.title} - Audio story on Gistvox" />
+      
+      <!-- Alternative Twitter Player Card if needed -->
       <meta name="twitter:player" content="https://${req.headers.host}/embed/${id}?v=2" />
       <meta name="twitter:player:width" content="480" />
       <meta name="twitter:player:height" content="400" />
