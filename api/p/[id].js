@@ -599,6 +599,9 @@ export default async function handler(req, res) {
           <a href="https://apps.apple.com/app/gistvox/id6751720190" title="Download on App Store">
             <img src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg" alt="App Store">
           </a>
+          <a href="https://play.google.com/store/apps/details?id=com.gistvox.app&hl=en" title="Get it on Google Play">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+          </a>
         </div>
         
         <div class="footer">
