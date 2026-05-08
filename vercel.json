@@ -12,18 +12,32 @@
       "maxDuration": 10
     }
   },
-  "rewrites": [
+  "redirects": [
+    {
+      "source": "/p/:postId",
+      "destination": "https://gistvox.com/post/:postId",
+      "statusCode": 301
+    },
+    {
+      "source": "/g/:groupId",
+      "destination": "https://gistvox.com/group/:groupId",
+      "statusCode": 301
+    },
+    {
+      "source": "/series/:seriesId",
+      "destination": "https://gistvox.com",
+      "statusCode": 302
+    },
     {
       "source": "/",
-      "destination": "/api/index"
-    },
+      "destination": "https://gistvox.com",
+      "statusCode": 301
+    }
+  ],
+  "rewrites": [
     {
       "source": "/favicon.ico",
       "destination": "/api/favicon"
-    },
-    {
-      "source": "/p/:id",
-      "destination": "/api/p/:id"
     },
     {
       "source": "/og/:id.png",
